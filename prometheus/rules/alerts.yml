@@ -1,0 +1,49 @@
+groups:
+  - name: host
+    rules:
+      - alert: HighCPULoad
+        expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 01
+        for: 10s
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU load (instance {{ $labels.instance }})"
+          description: "CPU load is > 80%\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+      - alert: HighMemoryUsage
+        expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage (instance {{ $labels.instance }})"
+          description: "Memory usage is > 85%\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+      - alert: HighDiskUsage
+        expr: (node_filesystem_size_bytes{fstype!="tmpfs"} - node_filesystem_free_bytes{fstype!="tmpfs"}) / node_filesystem_size_bytes{fstype!="tmpfs"} * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High disk usage (instance {{ $labels.instance }})"
+          description: "Disk usage is > 85%\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+  - name: network
+    rules:
+      - alert: NetworkTrafficSpike
+        expr: rate(node_network_receive_bytes_total[5m]) > 10000000
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Network traffic spike (instance {{ $labels.instance }})"
+          description: "Network traffic spike detected\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+      - alert: HighNetworkErrorRate
+        expr: rate(node_network_transmit_errs_total[5m]) > 0 or rate(node_network_receive_errs_total[5m]) > 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High network error rate (instance {{ $labels.instance }})"
+          description: "Network errors detected\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}" 

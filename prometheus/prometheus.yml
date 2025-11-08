@@ -1,0 +1,41 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - alertmanager:9093
+
+rule_files:
+  - "rules/*.yml"
+
+scrape_configs:
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  - job_name: "node_exporter"
+    static_configs:
+      - targets: ["node-exporter:9100"]
+
+  - job_name: "cadvisor"
+    static_configs:
+      - targets: ["cadvisor:8080"]
+
+  - job_name: "alertmanager"
+    static_configs:
+      - targets: ["alertmanager:9093"]
+
+  # Use localhost for Suricata mock exporter
+  - job_name: "suricata"
+    static_configs:
+      - targets: ["localhost:9917"]
+    metrics_path: "/metrics"
+
+  # Use localhost for SNMP mock exporter
+  - job_name: 'snmp_mock'
+    static_configs:
+      - targets: ["localhost:9116"]
+    metrics_path: "/metrics"

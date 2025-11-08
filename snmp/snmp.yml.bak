@@ -1,0 +1,127 @@
+auths:
+  public_v2:
+    community: public
+    version: 2
+
+modules:
+  default:
+    auth: public_v2
+    retries: 3
+    timeout: 10s
+    walk_params:
+      max_repetitions: 25
+    metrics:
+      - name: sysUpTime
+        oid: 1.3.6.1.2.1.1.3
+        type: gauge
+        help: The time since the network management portion of the system was last re-initialized.
+      - name: sysName
+        oid: 1.3.6.1.2.1.1.5
+        type: DisplayString
+        help: The administratively-assigned name for this managed node.
+      - name: sysDescr
+        oid: 1.3.6.1.2.1.1.1
+        type: DisplayString
+        help: A textual description of the entity.
+      - name: ifNumber
+        oid: 1.3.6.1.2.1.2.1
+        type: gauge
+        help: The number of network interfaces present on this system.
+      - name: ifDescr
+        oid: 1.3.6.1.2.1.2.2.1.2
+        type: DisplayString
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+        help: A textual string containing information about the interface.
+      - name: ifType
+        oid: 1.3.6.1.2.1.2.2.1.3
+        type: gauge
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+        help: The type of interface.
+      - name: ifMtu
+        oid: 1.3.6.1.2.1.2.2.1.4
+        type: gauge
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+        help: The size of the largest packet which can be sent/received on the interface.
+      - name: ifSpeed
+        oid: 1.3.6.1.2.1.2.2.1.5
+        type: gauge
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+        help: An estimate of the interface's current bandwidth in bits per second.
+      - name: ifAdminStatus
+        oid: 1.3.6.1.2.1.2.2.1.7
+        type: gauge
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+        help: The desired state of the interface.
+      - name: ifOperStatus
+        oid: 1.3.6.1.2.1.2.2.1.8
+        type: gauge
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+        help: The current operational state of the interface.
+      - name: ifInOctets
+        oid: 1.3.6.1.2.1.2.2.1.10
+        type: counter
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+        help: The total number of octets received on the interface.
+      - name: ifInUcastPkts
+        oid: 1.3.6.1.2.1.2.2.1.11
+        type: counter
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+        help: The number of unicast packets delivered to a higher-layer protocol.
+      - name: ifInDiscards
+        oid: 1.3.6.1.2.1.2.2.1.13
+        type: counter
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+        help: The number of inbound packets discarded.
+      - name: ifInErrors
+        oid: 1.3.6.1.2.1.2.2.1.14
+        type: counter
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+        help: The number of inbound packets that contained errors.
+      - name: ifOutOctets
+        oid: 1.3.6.1.2.1.2.2.1.16
+        type: counter
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+        help: The total number of octets transmitted out of the interface.
+      - name: ifOutUcastPkts
+        oid: 1.3.6.1.2.1.2.2.1.17
+        type: counter
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+        help: The total number of packets that higher-level protocols requested be transmitted to unicast addresses.
+      - name: ifOutDiscards
+        oid: 1.3.6.1.2.1.2.2.1.19
+        type: counter
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+        help: The number of outbound packets discarded.
+      - name: ifOutErrors
+        oid: 1.3.6.1.2.1.2.2.1.20
+        type: counter
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+        help: The number of outbound packets that could not be transmitted because of errors.

@@ -1,0 +1,29 @@
+groups:
+  - name: snmp
+    rules:
+      - alert: NetworkInterfaceDown
+        expr: ifOperStatus != 1
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Network interface down (instance {{ $labels.instance }})"
+          description: "Network interface {{ $labels.ifDescr }} is down\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+      - alert: HighNetworkTraffic
+        expr: rate(ifInOctets[5m]) > 100000000 or rate(ifOutOctets[5m]) > 100000000
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High network traffic (instance {{ $labels.instance }})"
+          description: "Network interface {{ $labels.ifDescr }} is experiencing high traffic\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+      - alert: NetworkErrors
+        expr: rate(ifInErrors[5m]) > 0 or rate(ifOutErrors[5m]) > 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Network errors detected (instance {{ $labels.instance }})"
+          description: "Network interface {{ $labels.ifDescr }} is experiencing errors\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}" 

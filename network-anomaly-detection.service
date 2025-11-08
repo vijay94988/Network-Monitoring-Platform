@@ -1,0 +1,14 @@
+[Unit]
+Description=Network Anomaly Detection Service
+After=network.target
+
+[Service]
+Type=simple
+User=$USER
+WorkingDirectory=/opt/monitoring-stack
+ExecStart=/opt/monitoring-stack/venv/bin/python3 /opt/monitoring-stack/network_anomaly_detection.py --prometheus_url=http://localhost:9090
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
